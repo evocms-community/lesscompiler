@@ -15,25 +15,34 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
     if (!is_dir($hashes)) {
         mkdir($hashes, 0777, true);
     }
-    
-    $files = scandir(rtrim($styles, '/'));
-    
-    foreach ($files as $filename) {
-        $fullpath = $styles . $filename;
 
-        if (is_readable($fullpath) && (strtolower(pathinfo($fullpath, PATHINFO_EXTENSION)) == 'less')) {
-            $hash   = hash('md5', file_get_contents($fullpath));
-            $hashfn = $hashes . $filename . '.hash';
+    $files = [];
+
+    foreach (glob($styles . '*.less') as $filename) {
+        if (is_readable($filename)) {
+            $basename = pathinfo($filename, PATHINFO_BASENAME);
+
+            $hash   = hash('md5', file_get_contents($filename));
+            $hashfn = $hashes . $basename . '.hash';
 
             if (file_exists($hashfn) && $hash == file_get_contents($hashfn)) {
                 continue;
             }
-            
-            $parser = new Parser();
-            $parser->parseFile($fullpath);
 
-            file_put_contents($styles . substr($filename, 0, -4) . 'css', $parser->getCSS());
+            if (strpos($basename, '_') !== 0) {
+                $files[$basename] = $filename;
+            }
+
             file_put_contents($hashfn, $hash);
+        }
+    }
+
+    if (!empty($files)) {
+        $parser = new Parser();
+
+        foreach ($files as $basename => $filename) {
+            $parser->parseFile($filename);
+            file_put_contents($styles . pathinfo($basename, PATHINFO_FILENAME) . '.css', $parser->getCSS());
         }
     }
 }
