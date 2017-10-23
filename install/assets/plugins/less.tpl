@@ -5,8 +5,9 @@
  * Compiling LESS styles to CSS on page init 
  *
  * @category    plugin
- * @version     0.1
+ * @version     0.2
  * @author      sergej_savelev, kassio
+ * @internal    @properties &path=Path to styles;text;assets/templates/default/css/
  * @internal    @events OnWebPageInit 
  * @internal    @modx_category Manager and Admin
  * @internal    @installset sample

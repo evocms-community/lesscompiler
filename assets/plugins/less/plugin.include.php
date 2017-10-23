@@ -8,10 +8,10 @@ use ILess\Node\DimensionNode;
 if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
     require_once MODX_BASE_PATH . 'assets/lib/ILess/Autoloader.php';
     ILess\Autoloader::register();
-    
-    $styles = MODX_BASE_PATH . 'assets/templates/default/css/';
-    $hashes = MODX_BASE_PATH . 'assets/templates/default/css/.hashes/';
-    
+
+    $styles = MODX_BASE_PATH . $modx->Event->params['path'];
+    $hashes = MODX_BASE_PATH . $modx->Event->params['path'] . '.hashes/';
+
     if (!is_dir($hashes)) {
         mkdir($hashes, 0777, true);
     }
