@@ -17,8 +17,22 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
     }
 
     $files = [];
+    $usevars = false;
 
-    foreach (glob($styles . '*.less') as $filename) {
+    $raw = glob($styles . '*.less');
+
+    if (!empty($modx->Event->params['vars']) && is_readable(MODX_BASE_PATH . $modx->Event->params['vars'])) {
+        $usevars = true;
+        array_unshift($raw, MODX_BASE_PATH . $modx->Event->params['vars']);
+
+        foreach (glob($hashes . '*') as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+    }
+
+    foreach ($raw as $filename) {
         if (is_readable($filename)) {
             $basename = pathinfo($filename, PATHINFO_BASENAME);
 
@@ -39,6 +53,11 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
 
     if (!empty($files)) {
         $parser = new Parser();
+
+        if ($usevars) {
+            $vars = json_decode(file_get_contents(array_shift($files)), true);
+            $parser->setVariables($vars);
+        }
 
         foreach ($files as $basename => $filename) {
             $parser->parseFile($filename);
