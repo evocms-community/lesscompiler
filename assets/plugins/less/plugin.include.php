@@ -56,6 +56,18 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
 
         if ($usevars) {
             $vars = json_decode(file_get_contents(array_shift($files)), true);
+
+            // handle variables links
+            foreach ($vars as $key => $value) {
+                if (strpos($value, '@') === 0) {
+                    $value = ltrim($value, '@');
+
+                    if (isset($vars[$value])) {
+                        $vars[$key] = $vars[$value];
+                    }
+                }
+            }
+
             $parser->setVariables($vars);
         }
 
