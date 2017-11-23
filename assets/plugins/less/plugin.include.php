@@ -16,20 +16,17 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
         mkdir($hashes, 0777, true);
     }
 
-    $files = [];
+    $files   = [];
+    $update  = false;
     $usevars = false;
 
     $raw = glob($styles . '*.less');
 
     if (!empty($modx->Event->params['vars']) && is_readable(MODX_BASE_PATH . $modx->Event->params['vars'])) {
         $usevars = true;
-        array_unshift($raw, MODX_BASE_PATH . $modx->Event->params['vars']);
+        $update  = true;
 
-        foreach (glob($hashes . '*') as $file) {
-            if (is_file($file)) {
-                unlink($file);
-            }
-        }
+        array_unshift($raw, MODX_BASE_PATH . $modx->Event->params['vars']);
     }
 
     foreach ($raw as $filename) {
@@ -39,12 +36,14 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
             $hash   = hash('md5', file_get_contents($filename));
             $hashfn = $hashes . $basename . '.hash';
 
-            if (file_exists($hashfn) && $hash == file_get_contents($hashfn)) {
+            if (!$update && file_exists($hashfn) && $hash == file_get_contents($hashfn)) {
                 continue;
             }
 
             if (strpos($basename, '_') !== 0) {
                 $files[$basename] = $filename;
+            } else {
+                $update = true;
             }
 
             file_put_contents($hashfn, $hash);
