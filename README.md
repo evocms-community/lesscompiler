@@ -1,4 +1,28 @@
 ## LESS Compiler for Evolution CMS
 
-Compiles `*.less` files on `OnWebPageInit` event, ignoring files with starting underscore.
+Плагин по событию `OnWebPageInit` компилирует `*.less` файлы, которые находятся в указанном в настройках плагина каталоге, кроме файлов, которые начинаются с нижнего подчеркивания.
 
+Например, можно в настройках указать каталог `assets/templates/default/css`, и поместить в этот каталог следующие файлы:
+```
+_fonts.less
+_modals.less
+style.less
+```
+
+Файлы с именем, начинающимся с нижнего подчеркивания, могут включаться в главный файл, вот так:
+```css
+@import (less) "_fonts.less";
+@import (less) "_modals.less";
+```
+
+При каждом изменении любого из этих файлов в указанном каталоге будет создан файл `style.css`, который и нужно загружать на странице.
+
+Дополнительно в настройках плагина можно указать путь к json-файлу, в котором будут содержаться less-переменные. Содержание может быть, например, таким:
+
+```json
+{
+    "primary_color": "#4f7df1",
+    "buttons_color": "#e32b2b",
+    "menu_background": "@primary_color"
+}
+```
