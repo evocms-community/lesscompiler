@@ -59,16 +59,8 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
 
             // handle variables links
             foreach ($vars as $key => $value) {
-                if (strpos($value, '@') === 0) {
-                    $value = ltrim($value, '@');
-
-                    if (isset($vars[$value])) {
-                        $vars[$key] = $vars[$value];
-                    }
-                }
+                $parser->parseString("@$key: $value;");
             }
-
-            $parser->setVariables($vars);
         }
 
         foreach ($files as $basename => $filename) {
