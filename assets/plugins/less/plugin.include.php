@@ -1,17 +1,4 @@
-//<?php
-/**
- * less
- * 
- * Compiling LESS styles to CSS on page init 
- *
- * @category    plugin
- * @version     1.0.0
- * @author      sergej_savelev, kassio
- * @internal    @properties &path=Path to styles;text;assets/templates/default/css/ &vars=Path to json with variables;text;assets/templates/default/css/variables.json
- * @internal    @events OnWebPageInit,OnPageNotFound
- * @internal    @modx_category Manager and Admin
- * @internal    @installset sample
- */
+<?php
 
 use ILess\Parser;
 use ILess\FunctionRegistry;
@@ -65,36 +52,20 @@ if (!empty($modx->Event) && $modx->Event->name == 'OnWebPageInit') {
     }
 
     if (!empty($files)) {
+        $parser = new Parser();
+
         if ($usevars) {
             $vars = json_decode(file_get_contents(array_shift($files)), true);
+
+            // handle variables links
+            foreach ($vars as $key => $value) {
+                $parser->parseString("@$key: $value;");
+            }
         }
 
         foreach ($files as $basename => $filename) {
-            $parser = new Parser([
-                'sourceMap' => true,
-                'compress'  => true,
-            ]);
-
-            if ($usevars) {
-                // handle variables links
-                foreach ($vars as $key => $value) {
-                    $parser->parseString("@$key: $value;");
-                }
-            }
-
-            $targetfile = pathinfo($basename, PATHINFO_FILENAME) . '.css';
-            $mapfile    = 'assets/templates/default/css/' . $targetfile . '.map';
-
-            $parser->getContext()->sourceMapOptions = [
-                'sourceRoot' => '/',
-                'filename'  => $targetfile,
-                'url'       => '/' . $mapfile,
-                'write_to'  => MODX_BASE_PATH . $mapfile,
-                'base_path' => MODX_BASE_PATH,
-            ];
-
             $parser->parseFile($filename);
-            file_put_contents($styles . $targetfile, $parser->getCSS());
+            file_put_contents($styles . pathinfo($basename, PATHINFO_FILENAME) . '.css', $parser->getCSS());
         }
     }
 }
