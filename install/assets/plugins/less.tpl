@@ -86,7 +86,7 @@ if (!empty($modx->Event)) {
                     }
 
                     $targetfile = pathinfo($basename, PATHINFO_FILENAME) . '.css';
-                    $mapfile    = 'assets/templates/default/css/' . $targetfile . '.map';
+                    $mapfile    = $path . $targetfile . '.map';
 
                     $parser->getContext()->sourceMapOptions = [
                         'sourceRoot' => '/',
