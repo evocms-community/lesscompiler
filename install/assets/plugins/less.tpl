@@ -1,6 +1,6 @@
 //<?php
 /**
- * less
+ * LessCompiler
  * 
  * Compiling LESS styles to CSS on page init 
  *
