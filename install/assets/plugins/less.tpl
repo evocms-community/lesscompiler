@@ -27,7 +27,7 @@ if (!empty($modx->Event)) {
 
             $path   = trim($params['path'], '/') . '/';
             $styles = MODX_BASE_PATH . $path;
-            $hashes = MODX_BASE_PATH . $path . '.hashes/';
+            $hashes = MODX_BASE_PATH . 'assets/cache/less_hashes/';
 
             if (!is_dir($hashes)) {
                 mkdir($hashes, 0777, true);
