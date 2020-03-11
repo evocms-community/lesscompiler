@@ -46,7 +46,7 @@ class LessCompiler
                 $hash     = hash('md5', file_get_contents($file));
                 $hashFile = $this->hashesPath . $basename . '.hash';
 
-                if (!$update && file_exists($hashFile) && $hash == file_get_contents($hashFile)) {
+                if (file_exists($hashFile) && $hash == file_get_contents($hashFile)) {
                     continue;
                 }
 
