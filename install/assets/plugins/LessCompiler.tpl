@@ -7,7 +7,7 @@
  * @category    plugin
  * @version     1.2.0
  * @author      sergej_savelev, kassio
- * @internal    @properties &path=Path to styles;text;assets/templates/default/css/ &vars=Path to json with variables;text;assets/templates/default/css/variables.json
+ * @internal    @properties &path=Path to styles;text;theme/css/ &vars=Path to json with variables;text;theme/css/variables.json
  * @internal    @events OnWebPageInit,OnPageNotFound,OnSiteRefresh
  * @internal    @modx_category Manager and Admin
  * @internal    @installset sample
