@@ -5,7 +5,7 @@
  * Compiling LESS styles to CSS on page init
  *
  * @category    plugin
- * @version     1.2.0
+ * @version     1.2.1
  * @author      sergej_savelev, kassio
  * @internal    @properties &path=Path to styles;text;theme/css/ &vars=Path to json with variables;text;theme/css/variables.json
  * @internal    @events OnWebPageInit,OnPageNotFound,OnSiteRefresh
@@ -15,7 +15,7 @@
 
 require_once MODX_BASE_PATH . 'assets/plugins/lesscompiler/src/LessCompiler.php';
 
-$compiler = new LessCompiler();
+$compiler = new LessCompiler($params);
 
 switch ($modx->event->name) {
     case 'OnWebPageInit':
