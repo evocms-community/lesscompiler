@@ -67,7 +67,7 @@ class LessCompiler
 
             $parser = new Parser([
                 'sourceMap' => true,
-                'compress'  => true,
+                'compress'  => false,
             ]);
 
             if (!empty($this->prependedStyles)) {
